@@ -33,6 +33,10 @@ namespace APM.WebAPI.Providers
 
             ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
 
+            // Now to enable CORS for the Token service / account register login
+            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "http://localhost:65238" });
+
+
             if (user == null)
             {
                 context.SetError("invalid_grant", "The user name or password is incorrect.");

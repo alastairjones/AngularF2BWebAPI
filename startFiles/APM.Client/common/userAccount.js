@@ -2,7 +2,7 @@
     "use strict";
 
     angular
-        .module("common.services", ["ngResource"])
+        .module("common.services")
         .factory("userAccount",
                 ["$resource",
                  "appSettings",
@@ -10,11 +10,30 @@
 
 
     function userAccount($resource, appSettings) {
-        return $resource(appSettings.serverPath + "/api/Account/Register", null, // null added so we don't add default id's on the client side
-            { // Added a custom update action to our product resource service
-                'registerUser': {method: 'PUT'}
+        return {            
+                registration: $resource(appSettings.serverPath + "/api/Account/Register", null,
+                    {
+                        'registerUser' : { method: 'POST' }
+                    }),
+                login: $resource(appSettings.serverPath + "/Token", null,
+                    {
+                        'loginUser': {
+                            method: 'POST',
+                            // Because of the login of the web api needs a different api then we need to set it here.
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            // Now the default $resource changes our request to JSON format we don't want that
+                            // so we need to change to an encoded string using the following
+                            transformRequest: function (data, headersGetter) {
+                                var str = [];
+                                for (var d in data)
+                                    str.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+                                        
+                                return str.join("&");
+                            }
+                        }
+                    })
             }
-            );
+        
     }
 
 }());

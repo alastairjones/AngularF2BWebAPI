@@ -11,7 +11,14 @@ using System.Web.OData;
 
 namespace APM.WebAPI.Controllers
 {
-    [EnableCorsAttribute("http://localhost:65238","*","*")]
+    /// <summary>
+    /// //////////////////
+    /// </summary>
+    /// 
+
+    // CORS also in ApplicationOAuthProvider
+    [EnableCorsAttribute(origins:"http://localhost:65238",headers: "*",methods: "*")]
+    //[EnableCorsAttribute("*", "*", "*")]
     public class ProductsController : ApiController
     {
         /*
@@ -49,6 +56,7 @@ namespace APM.WebAPI.Controllers
         /// <returns> Note the IHttpActionResult is new to web api2 and allows for improved error responses</returns>
         [EnableQuery(PageSize=100)]
         [ResponseType(typeof(Product))] // Since changing the return type to IHttpActionResult the api documentation needs this to continue working and know it is a product return type
+        [Authorize]
         public IHttpActionResult Get()
         {
             var productRepository = new ProductRepository();
