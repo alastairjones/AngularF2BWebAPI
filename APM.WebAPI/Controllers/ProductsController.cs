@@ -17,7 +17,7 @@ namespace APM.WebAPI.Controllers
     /// 
 
     // CORS also in ApplicationOAuthProvider
-    [EnableCorsAttribute(origins:"http://localhost:65238",headers: "*",methods: "*")]
+    [EnableCorsAttribute(origins: "http://localhost:65228", headers: "*", methods: "*")]
     //[EnableCorsAttribute("*", "*", "*")]
     public class ProductsController : ApiController
     {
